@@ -53,11 +53,27 @@ The pipeline can also be run on slurm with all the samples/bacterial genomes lis
 bash bacteriophage.sh
 ```
 
-## 6. bacteriophage_filter.py 
-
+## 6. bacteriophage_filter.py compares identified proviruses and phage gene results to known known proviruses and phage tail-like structures in bacterial genomes
+gathers checkv, phrog, and plasmid results from all samples into tables<br>
+annotated genes from genomad output are put into a bed file format
+```
+prediction_out/all_genes.phage_tail.bed
+```
+bed file of annotated genes are intersected with all_genes.phage_tail.bed that have operon information of phages, T6SS, and eCIS. A table listing operons and all gene annotations associated with operon are returned
+```
+../prediction_out/genes_phage_tail_variables.csv
 ```
 
-```
+## 7. NaturalLanguageProcessing.ipynb identifies genes as either from provirus or phage tail-like structure using gene annotation descriptions
+prediction_out/all_genes.phage_tail.bed annotation descriptions are the X variable and type are the y/target variables. X variables are strings that are standardized, tokenized, and vectorized for the recurrent neural network (RNN). The y variables are coded as binary with phages as 1 and phage tail-like structures as 0. Data is split into train, validation, and test with no overlaps between the datasets. A model with Long short-term memory network (LSTM) layers and sigmoid activations is used.
+
+## 8. 
+
+
+
+
+
+
 
 
 
