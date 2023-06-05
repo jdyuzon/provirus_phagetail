@@ -67,7 +67,11 @@ bed file of annotated genes are intersected with all_genes.phage_tail.bed that h
 ## 7. NaturalLanguageProcessing.ipynb identifies genes as either from provirus or phage tail-like structure using gene annotation descriptions
 prediction_out/all_genes.phage_tail.bed annotation descriptions are the X variable and type are the y/target variables. X variables are strings that are standardized, tokenized, and vectorized for the recurrent neural network (RNN). The y variables are coded as binary with phages as 1 and phage tail-like structures as 0. Data is split into train, validation, and test with no overlaps between the datasets. A model with Long short-term memory network (LSTM) layers and sigmoid activations is used.
 
-## 8. 
+## 8. RandomForest_phage_trail.ipynb and XGBoost_phage_trail.ipynb identifies operons as either provirus genomes or phage tail-like structures
+In RandomForest_phage_trail.ipynb, prediction_out/genes_phage_tail_variables.csv annotations are X variables and y variables are phages or phage tail like structures. Presence of an X variable/annotation is encoded as 1 and absence is 0. y variables are phages encoded as 1 and phage tail-like structures as 0. Data is split into train and test datasets. Model performance is shown as accuracy, precision, recall, and F1 score. Feature importance described by GINI/Mean Decrease in Impurity but better metrics will be implemented.<br>
+
+The approach for XGBoost_phage_trail.ipynb dataset uses two approaches: 1) use the same training and test dataset as Random Forest model, or 2) reduce dataset using the first PCAs that describe most of the variation. The second method also uses optune for hyperperameter optimization.
+
 
 
 
