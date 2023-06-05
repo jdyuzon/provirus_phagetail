@@ -55,7 +55,7 @@ genes.to_csv("prediction_out/all_genes.bed",sep='\t',index=False,header=True)
 ### Gather Tables of TIGER/Phage1&2, eCIS, T6SS coordinates
 os.system("mkdir prediction_out")
 os.system("mkdir prediction_out/random_forest")
-os.system("cat /pscratch/sd/j/jdyuzon/TrainTestValidate_db/TIGER_SuppFile1_db/TIGER_phage.bed /pscratch/sd/j/jdyuzon/TrainTestValidate_db/Secret6_exp_val_T6SS/Secret6_exp_val.bed /pscratch/sd/j/jdyuzon/TrainTestValidate_db/eCIStem_operons_predict/eCIStem_operons_predict.match.bed > prediction_out/phage_tail.bed")
+
 ### Format bedfile of phages and tails to remove the extension on the contig name
 phage_tail=pd.read_csv("prediction_out/phage_tail.bed", sep='\t',header=None)
 phage_tail[0]=phage_tail[0].str.replace('\..*','',regex=True)
@@ -67,9 +67,9 @@ phage_tail['type'].value_counts()
 
 
 ### intersect Phage/T6SS/eCIS/Tailocins table with genomad_annotation_genes
-os.system("/global/homes/j/jdyuzon/.conda/pkgs/bedtools-2.27.1-hd03093a_6/bin/sortBed -i prediction_out/all_genes.bed -header> prediction_out/all_genes.sort.bed ")
-os.system("/global/homes/j/jdyuzon/.conda/pkgs/bedtools-2.27.1-hd03093a_6/bin/sortBed -i prediction_out/phage_tail.bed -header> prediction_out/phage_tail.sort.bed ")
-os.system("/global/homes/j/jdyuzon/.conda/pkgs/bedtools-2.27.1-hd03093a_6/bin/intersectBed -wa -wb -a prediction_out/phage_tail.sort.bed -b prediction_out/all_genes.bed -header -sortout|sed '1 s_$_\tcontiggene\tstartgene\tstopgene\tgene\tlength\tstrand\tgccontent\tgeneticcode\trbsmotif\tmarker\tevalue\tbitscore\tuscg\tplasmidhallmark\tvirushallmark\ttaxid\ttaxname\tannotationconjscan\tannotationamr\tannotationaccessions\tannotationdescription\thost_'> prediction_out/all_genes.phage_tail.bed")
+os.system("bedtools-2.27.1-hd03093a_6/bin/sortBed -i prediction_out/all_genes.bed -header> prediction_out/all_genes.sort.bed ")
+os.system("bedtools-2.27.1-hd03093a_6/bin/sortBed -i prediction_out/phage_tail.bed -header> prediction_out/phage_tail.sort.bed ")
+os.system("bedtools-2.27.1-hd03093a_6/bin/intersectBed -wa -wb -a prediction_out/phage_tail.sort.bed -b prediction_out/all_genes.bed -header -sortout|sed '1 s_$_\tcontiggene\tstartgene\tstopgene\tgene\tlength\tstrand\tgccontent\tgeneticcode\trbsmotif\tmarker\tevalue\tbitscore\tuscg\tplasmidhallmark\tvirushallmark\ttaxid\ttaxname\tannotationconjscan\tannotationamr\tannotationaccessions\tannotationdescription\thost_'> prediction_out/all_genes.phage_tail.bed")
 
 
 ### output should have coordinates ID, type, gene, annotation (Pfam,COG,etc), host, virus_taxa
@@ -90,27 +90,6 @@ genes_phage_tail_variables=genes_phage_tail.reset_index().pivot_table(index=['vi
 genes_phage_tail_variables=genes_phage_tail_variables.reset_index()
 genes_phage_tail_variables.to_csv('prediction_out/genes_phage_tail_variables.csv')
 
-### make Y variable binary (Phage=1 and tails=0)
-#y=genes_phage_tail_variables['type']
-#y=y.replace('Phage1','1')
-#y=y.replace('Phage2','1')
-#y=y.replace('T6SS','0')
-#y=y.replace('eCIS','0')
-#X=genes_phage_tail_variables.drop(['viral_ID','type'], axis =1, inplace=False)
-
-### Perform the train-test split
-#X_train, X_test, y_train, y_test=train_test_split(X, y, test_size=.25, stratify=y)
-#print(X_train.shape)
-#X_train
-#y
-
-### No need to transform binary variables
-
-### Write tables
-#X_train.to_csv('prediction_out/random_forest/X_train.csv')
-#X_test.to_csv('prediction_out/random_forest/X_test.csv')
-#y_train.to_csv('prediction_out/random_forest/y_train.csv')
-#y_test.to_csv('prediction_out/random_forest/y_test.csv')
 
 
 
